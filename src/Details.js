@@ -3,9 +3,8 @@ import ReactCrop from "react-image-crop";
 import Resizer from "react-image-file-resizer";
 import Brain from "./brain.png";
 import "react-image-crop/dist/ReactCrop.css";
-import No_img_found from "./no_image_found.jpg";
 
-const CustomImage = () => {
+const CustomImage = ({ testprop }) => {
   const [upImg, setUpImg] = useState();
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
@@ -176,6 +175,7 @@ const CustomImage = () => {
                 <img src={Brain} style={{ height: "100px", width: "100px" }} />
               </div>
               <div className="mt-3 text-center">
+                {testprop}
                 <React.Fragment>
                   <div className="mb-3">
                     <label
