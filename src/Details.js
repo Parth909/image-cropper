@@ -8,7 +8,6 @@ const CustomImage = ({ testprop }) => {
   const [upImg, setUpImg] = useState();
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const closeBtnRef = useRef(null);
   const [crop, setCrop] = useState({ unit: "%", aspect: 1 / 1 });
   const [completedCrop, setCompletedCrop] = useState(null);
   const [cropImgUrl, setCropImgUrl] = useState({
@@ -21,7 +20,6 @@ const CustomImage = ({ testprop }) => {
   // customTile will be downloaded using filename
   const [filename, setFilename] = React.useState(null);
   const [alert, setAlert] = React.useState(null);
-  const [aspectRatio, setAspectRatio] = React.useState("1/1");
 
   const generateUpload = (canvas, crop, setCropImgUrl) => {
     if (!crop || !canvas) {
@@ -153,16 +151,13 @@ const CustomImage = ({ testprop }) => {
     };
   }, [alert]);
 
-  useEffect(() => {
-    setCrop({
-      ...crop,
-      aspect: aspectRatio.split("/")[0] / aspectRatio.split("/")[1],
-    });
-  }, [aspectRatio]);
-
   const changeAspectRatio = (e) => {
     e.preventDefault();
-    setAspectRatio(e.target.value);
+    // e.target.value = aspectRatio
+    setCrop({
+      ...crop,
+      aspect: e.target.value.split("/")[0] / e.target.value.split("/")[1],
+    });
   };
 
   return (
@@ -196,7 +191,7 @@ const CustomImage = ({ testprop }) => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      value={aspectRatio}
+                      value="1/1"
                       onChange={changeAspectRatio}
                     >
                       <option value="1/1">1 : 1 Aspect Ratio</option>

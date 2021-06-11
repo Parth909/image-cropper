@@ -2,7 +2,7 @@ import { USER_LOADED, REGISTER_SUCCESS } from "../actions/types";
 
 const initialState = {
   token: null,
-  isAuthenticated: true,
+  isAuthenticated: false,
   loading: false,
   firstname: null,
   lastname: null,

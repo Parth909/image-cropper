@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Details from "./Details";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -8,10 +7,12 @@ import PrivateRoute from "./PrivateRoute";
 // redux
 import { Provider } from "react-redux";
 import store from "./store";
+import Alert from "./Alert";
+
 const App = () => {
   return (
-    <Provider store={store}>
-      <div className="App">
+    <div className="App">
+      <Provider store={store}>
         <Router>
           <Switch>
             <Route
@@ -31,8 +32,9 @@ const App = () => {
             />
           </Switch>
         </Router>
-      </div>
-    </Provider>
+        <Alert />
+      </Provider>
+    </div>
   );
 };
 
