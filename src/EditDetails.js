@@ -4,11 +4,11 @@ import Brain from "./image/brain.png";
 import "react-image-crop/dist/ReactCrop.css";
 import ContentEditable from "react-contenteditable";
 import ImageCropper from "./ImageCropper";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 // actions
 import { setAlert } from "./actions/alert";
 import { editUserProfile } from "./actions/auth";
-
+import noImageFound from "./image/no_image_found.png";
 import "./css/Details.css";
 
 const EditDetails = ({ auth, setAlert, editUserProfile }) => {
@@ -27,8 +27,8 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
     pass: "",
     cpass: "",
   });
-  const [bannerimg, setBannerImg] = React.useState("");
-  const [profileimg, setProfileImg] = React.useState("");
+  const [bannerimg, setBannerImg] = React.useState(null);
+  const [profileimg, setProfileImg] = React.useState(null);
 
   const { firstname, lastname, username, email, bio, currpass, pass, cpass } =
     details;
@@ -221,14 +221,25 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               <div className="section-head text-start mt-2">Banner Image</div>
               {imgCropSec !== "banner" ? (
                 <div className="p-0 m-0">
-                  <img
-                    src={bannerimg}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "0.7rem",
-                    }}
-                  />
+                  {bannerimg && bannerimg.length < 5 ? (
+                    <img
+                      src={noImageFound}
+                      style={{
+                        width: "50%",
+                        height: "auto",
+                        borderRadius: "0.7rem",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={bannerimg}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "0.7rem",
+                      }}
+                    />
+                  )}
                   <div className="text-center">
                     <button
                       className="btn btn-primary btn-md py-1 mt-3"
@@ -253,14 +264,25 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               <div className="section-head text-start mt-2">Profile Image</div>
               {imgCropSec !== "profile" ? (
                 <div className="p-0 m-0">
-                  <img
-                    src={profileimg}
-                    style={{
-                      width: "60%",
-                      height: "auto",
-                      borderRadius: "0.7rem",
-                    }}
-                  />
+                  {bannerimg && bannerimg.length < 5 ? (
+                    <img
+                      src={noImageFound}
+                      style={{
+                        width: "50%",
+                        height: "auto",
+                        borderRadius: "0.7rem",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={profileimg}
+                      style={{
+                        width: "60%",
+                        height: "auto",
+                        borderRadius: "0.7rem",
+                      }}
+                    />
+                  )}
                   <div className="text-center">
                     <button
                       className="btn btn-primary btn-md py-1 mt-3"
@@ -360,14 +382,14 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               </button>
             </div>
             <div className="col-sm-6">
-              <button
+              <Link
+                to="/details"
                 className="btn btn-secondary btn-md py-1 mt-3"
                 type="submit"
-                onClick={(e) => <Redirect to="/details" />}
                 style={{ boxShadow: "none" }}
               >
                 Cancel
-              </button>
+              </Link>
             </div>
           </div>
           {/* <button
