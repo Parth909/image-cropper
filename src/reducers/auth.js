@@ -1,42 +1,55 @@
-import { USER_LOADED, REGISTER_SUCCESS } from "../actions/types";
+import {
+  USER_LOADED,
+  REGISTER_SUCCESS,
+  EMAIL_SENT,
+  SET_USER,
+} from "../actions/types";
 import banner from "../image/banner.jpg";
 import square from "../image/square.jpg";
 
-// const initialState = {
-//   token: null,
-//   isAuthenticated: true,
-//   loading: false,
-//   firstname: null,
-//   lastname: null,
-//   username: null,
-//   email: null,
-//   bio: null,
-//   bannerimg: null,
-//   profileimg: null,
-// };
-
 const initialState = {
   token: null,
-  isAuthenticated: true,
+  emailSent: false,
+  isAuthenticated: false,
   loading: false,
-  firstname: "Parth",
-  lastname: "Bhoir",
-  username: "parth_bhoir979",
-  email: "parth.bhoir909@gmail.com",
-  bio: "We are the greatest of all time in this whole world<br><br>Noice noice &lt;strong&gt;&lt;/strong&gt;",
-  bannerimg: banner,
-  profileimg: square,
+  _id: null,
+  firstname: "",
+  lastname: "",
+  username: "",
+  email: "",
+  bio: "",
+  bannerimg: "",
+  profileimg: "",
 };
+
+// const initialState = {
+//   token: null,
+//   isAuthenticated: false,
+//   loading: false,
+//   firstname: "Parth",
+//   lastname: "Bhoir",
+//   username: "parth_bhoir979",
+//   email: "parth.bhoir909@gmail.com",
+//   bio: "We are the greatest of all time in this whole world<br><br>Noice noice &lt;strong&gt;&lt;/strong&gt;",
+//   bannerimg: banner,
+//   profileimg: square,
+// };
 
 export default function auth(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case REGISTER_SUCCESS:
+    case EMAIL_SENT:
+      return {
+        ...state,
+        emailSent: payload, //true
+      };
+    case SET_USER:
       localStorage.setItem("__image_cropper_token__", payload.token);
       return {
         ...state,
-        ...payload,
+        token: payload.token,
+
         isAuthenticated: true,
         loading: false,
       };

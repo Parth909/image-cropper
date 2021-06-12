@@ -5,8 +5,9 @@ import "./css/Auth.css";
 import Brain from "./image/brain.png";
 // actions
 import { setAlert } from "./actions/alert";
+import { registerUser } from "./actions/auth";
 
-const Register = ({ auth: { isAuthenticated }, setAlert }) => {
+const Register = ({ auth: { isAuthenticated }, setAlert, registerUser }) => {
   const [data, setData] = React.useState({
     first: "",
     last: "",
@@ -66,8 +67,22 @@ const Register = ({ auth: { isAuthenticated }, setAlert }) => {
       //  no field empty
       if (data[key].length < 3) {
         setAlert("Please enter valid details", "uni-blue", 5000);
+        return;
       }
     }
+    if (pass !== cpass) {
+      setAlert("Passwords should match", "uni-blue", 5000);
+      return;
+    }
+    let divs = document.querySelectorAll(".small");
+    for (let div of divs) {
+      // Passwords match ! length
+      if (div.innerText.length > 17) {
+        setAlert("Please enter valid details", "uni-blue", 5000);
+        return;
+      }
+    }
+    registerUser(data);
   };
 
   const patterns = {
@@ -105,7 +120,7 @@ const Register = ({ auth: { isAuthenticated }, setAlert }) => {
                   placeholder="First Name"
                   onChange={(e) => handleInput(e, firstpt)}
                   autoComplete="turn_off_autocomplete"
-                  title="More than 3 characters long containing only alphabets"
+                  title="Firstname atleast 3 characters long containing only alphabets"
                 />{" "}
                 <div className="small warning-msg"></div>
               </div>
@@ -120,7 +135,7 @@ const Register = ({ auth: { isAuthenticated }, setAlert }) => {
                   placeholder="Last name"
                   onChange={(e) => handleInput(e, lastpt)}
                   autoComplete="turn_off_autocomplete"
-                  title="More than 3 characters long containing only alphabets"
+                  title="Lastname atleast 3 characters long containing only alphabets"
                 />{" "}
                 <div className="small warning-msg"></div>
               </div>
@@ -166,7 +181,8 @@ const Register = ({ auth: { isAuthenticated }, setAlert }) => {
                   onChange={(e) => handleInput(e, passpt)}
                   autoComplete="turn_off_autocomplete"
                   aria-describedby="button-addon2"
-                  title="Choose a strong password with atleast 6 characters long"
+                  // title should be long such that it goes on next line
+                  title="Choose a strong password with atleast six characters long"
                 />{" "}
                 <button
                   className="btn btn-sm btn-view-pass"
@@ -226,4 +242,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { setAlert })(Register);
+export default connect(mapStateToProps, { setAlert, registerUser })(Register);

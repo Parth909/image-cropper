@@ -5,8 +5,9 @@ import "./css/Auth.css";
 import Brain from "./image/brain.png";
 // actions
 import { setAlert } from "./actions/alert";
+import { loginUser } from "./actions/auth";
 
-const Login = ({ auth: { isAuthenticated }, setAlert }) => {
+const Login = ({ auth: { isAuthenticated }, setAlert, loginUser }) => {
   const [data, setData] = React.useState({
     email: "",
     pass: "",
@@ -50,6 +51,15 @@ const Login = ({ auth: { isAuthenticated }, setAlert }) => {
         setAlert("Please enter valid details.", "uni-blue", 5000);
       }
     }
+    let divs = document.querySelectorAll(".small");
+    for (let div of divs) {
+      // Passwords match ! length
+      if (div.innerText.length > 1) {
+        setAlert("Please enter valid details", "uni-blue", 5000);
+        return;
+      }
+    }
+    loginUser(data);
   };
 
   const patterns = {
@@ -135,4 +145,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { setAlert })(Login);
+export default connect(mapStateToProps, { setAlert, loginUser })(Login);

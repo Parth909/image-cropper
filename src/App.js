@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
+import ConfirmRegistration from "./ConfirmRegistration";
 import PrivateRoute from "./PrivateRoute";
 // redux
 import { Provider } from "react-redux";
@@ -24,6 +25,11 @@ const App = () => {
             <Route exact path="/">
               <Redirect to="/details" />
             </Route>
+            <Route
+              exact
+              path="/auth/activate/:token"
+              component={(props) => <ConfirmRegistration {...props} />}
+            />
             <Route
               exact
               path="/login"

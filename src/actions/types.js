@@ -1,4 +1,6 @@
 // user
+export const EMAIL_SENT = "EMAIL_SENT";
+export const SET_USER = "SET_USER";
 export const USER_LOADED = "USER_LOADED";
 export const EDIT_USER_PROFILE = "EDIT_USER_PROFILE";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
