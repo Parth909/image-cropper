@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
-import "./Auth.css";
-import Brain from "./brain.png";
+import "./css/Auth.css";
+import Brain from "./image/brain.png";
 // actions
 import { setAlert } from "./actions/alert";
 
@@ -30,12 +30,14 @@ const Login = ({ auth: { isAuthenticated }, setAlert }) => {
 
   const handleInput = (e, regex) => {
     e.preventDefault();
-    let parent = e.target.parentNode;
-    let msgDiv = parent.querySelector(".small");
-    if (!regex.test(e.target.value)) {
-      msgDiv.innerText = e.target.title;
-    } else {
-      msgDiv.innerText = "";
+    if (e.target.name !== "pass") {
+      let parent = e.target.parentNode;
+      let msgDiv = parent.querySelector(".small");
+      if (!regex.test(e.target.value)) {
+        msgDiv.innerText = e.target.title;
+      } else {
+        msgDiv.innerText = "";
+      }
     }
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -45,7 +47,7 @@ const Login = ({ auth: { isAuthenticated }, setAlert }) => {
     for (let key of Object.keys(data)) {
       //  no field empty
       if (data[key].length < 3) {
-        setAlert("Please enter valid details.", "uni-blue", 4000);
+        setAlert("Please enter valid details.", "uni-blue", 5000);
       }
     }
   };
@@ -95,7 +97,7 @@ const Login = ({ auth: { isAuthenticated }, setAlert }) => {
                   onChange={(e) => handleInput(e, passpt)}
                   autoComplete="turn_off_autocomplete"
                   aria-describedby="button-addon2"
-                  title="Enter your password with atleast 6 characters long"
+                  title="Enter your password atleast 6 characters long"
                 />{" "}
                 <button
                   className="btn btn-sm btn-view-pass"
@@ -105,14 +107,16 @@ const Login = ({ auth: { isAuthenticated }, setAlert }) => {
                 >
                   <i className="fa fa-eye-slash" aria-hidden="true"></i>
                 </button>
+                <br />
                 <div className="d-block small warning-msg"></div>
               </div>
             </div>
           </div>
           <button
-            className="btn btn-primary btn-lg mt-3"
+            className="btn btn-primary btn-lg mt-3 py-1"
             type="submit"
             onClick={(e) => handleSubmit(e)}
+            style={{ boxShadow: "none" }}
           >
             Login
           </button>

@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
-import "./Auth.css";
-import Brain from "./brain.png";
+import "./css/Auth.css";
+import Brain from "./image/brain.png";
 // actions
 import { setAlert } from "./actions/alert";
 
@@ -65,7 +65,7 @@ const Register = ({ auth: { isAuthenticated }, setAlert }) => {
     for (let key of Object.keys(data)) {
       //  no field empty
       if (data[key].length < 3) {
-        setAlert("Please enter valid details", "uni-blue", 1000000);
+        setAlert("Please enter valid details", "uni-blue", 5000);
       }
     }
   };
@@ -204,9 +204,10 @@ const Register = ({ auth: { isAuthenticated }, setAlert }) => {
             </a>{" "}
           </div>{" "}
           <button
-            className="btn btn-primary btn-lg"
+            className="btn btn-primary btn-lg py-1"
             type="submit"
             onClick={(e) => handleSubmit(e)}
+            style={{ boxShadow: "none" }}
           >
             Register
           </button>

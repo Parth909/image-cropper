@@ -105,7 +105,7 @@
   height: 1em;
   padding: 0.25em 0.25em;
   color: #fff;
-  background: url("./icons/white-close.svg") center/1em auto no-repeat;
+  background: url("../icons/white-close.svg") center/1em auto no-repeat;
   border: 0;
   border-radius: 0.25rem;
   opacity: 1;
@@ -144,4 +144,8 @@
 
 .ml-4 {
   margin-left: 1.5rem !important;
+}
+
+button {
+  box-shadow: none !important;
 }

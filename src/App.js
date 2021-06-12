@@ -1,6 +1,12 @@
-import "./App.css";
+import "./css/App.css";
+import EditDetails from "./EditDetails";
 import Details from "./Details";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import PrivateRoute from "./PrivateRoute";
@@ -15,6 +21,9 @@ const App = () => {
       <Provider store={store}>
         <Router>
           <Switch>
+            <Route exact path="/">
+              <Redirect to="/details" />
+            </Route>
             <Route
               exact
               path="/login"
@@ -28,7 +37,14 @@ const App = () => {
             <PrivateRoute
               exact
               path="/details"
-              component={(props) => <Details {...props} testprop="Test Prop" />}
+              component={(props) => <Details {...props} />}
+            />
+            <PrivateRoute
+              exact
+              path="/edit-details"
+              component={(props) => (
+                <EditDetails {...props} testprop="Test Prop" />
+              )}
             />
           </Switch>
         </Router>
