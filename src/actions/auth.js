@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 // types
-import { EMAIL_SENT, EDIT_USER_PROFILE } from "./types";
+import { EMAIL_SENT, EDIT_USER_PROFILE, SET_USER } from "./types";
 
 export const editUserProfile = (data) => async (dispatch) => {
   data["currentpassword"] = data["currpass"];
@@ -86,7 +86,9 @@ export const loginUser = (data) => async (dispatch) => {
   try {
     const res = await axios.post(`/api/login`, obj);
 
-    console.log(res);
+    if (res.status === 200) {
+      // set the user
+    }
 
     dispatch(setAlert("Successfully logged in", "uni-blue", 10000));
 

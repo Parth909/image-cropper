@@ -49,7 +49,6 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         token: payload.token,
-
         isAuthenticated: true,
         loading: false,
       };
