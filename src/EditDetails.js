@@ -10,6 +10,7 @@ import { setAlert } from "./actions/alert";
 import { editUserProfile } from "./actions/auth";
 import noImageFound from "./image/no_image_found.png";
 import "./css/Details.css";
+// images
 
 const EditDetails = ({ auth, setAlert, editUserProfile }) => {
   // banner, profile
@@ -24,14 +25,24 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
     bannerimg: "",
     profileimg: "",
     currpass: "",
-    pass: "",
-    cpass: "",
+    // pass: "",
+    // cpass: "",
+    hobbies: [],
   });
-  const [bannerimg, setBannerImg] = React.useState(null);
-  const [profileimg, setProfileImg] = React.useState(null);
+  const [bannerimg, setBannerImg] = React.useState("");
+  const [profileimg, setProfileImg] = React.useState("");
 
-  const { firstname, lastname, username, email, bio, currpass, pass, cpass } =
-    details;
+  // setting bio using bioRef.current
+  const {
+    firstname,
+    lastname,
+    username,
+    email,
+    currpass,
+    pass,
+    cpass,
+    hobbies,
+  } = details;
 
   React.useEffect(() => {
     setDetails({
@@ -43,57 +54,50 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
       bio: auth.bio,
       bannerimg: auth.bannerimg,
       profileimg: auth.profileimg,
+      hobbies: auth.hobbies,
     });
     bioRef.current = auth.bio;
     setBannerImg(auth.bannerimg);
     setProfileImg(auth.profileimg);
   }, [auth]);
 
-  React.useEffect(() => {
-    console.log(details.bio);
-  }, [bio]);
+  // const showPassword = (e, classname) => {
+  //   e.preventDefault();
 
-  if (!auth.isAuthenticated) {
-    return <Redirect to="/login" />;
-  }
+  //   if (classname === "currpassword") {
+  //     let input = document.querySelector(`.${classname}`);
+  //     if (input.type === "password") {
+  //       input.type = "text";
+  //     } else {
+  //       input.type = "password";
+  //     }
+  //   }
 
-  const showPassword = (e, classname) => {
-    e.preventDefault();
+  //   if (classname === "password") {
+  //     let inputs = document.querySelectorAll(`.${classname}`);
+  //     for (let input of inputs) {
+  //       if (input.type === "password") {
+  //         input.type = "text";
+  //       } else {
+  //         input.type = "password";
+  //       }
+  //     }
+  //   }
+  // };
 
-    if (classname === "currpassword") {
-      let input = document.querySelector(`.${classname}`);
-      if (input.type === "password") {
-        input.type = "text";
-      } else {
-        input.type = "password";
-      }
-    }
+  // const confirmPassword = (e) => {
+  //   e.preventDefault();
+  //   let parent = e.target.parentNode;
+  //   let msgDiv = parent.querySelector(".small");
 
-    if (classname === "password") {
-      let inputs = document.querySelectorAll(`.${classname}`);
-      for (let input of inputs) {
-        if (input.type === "password") {
-          input.type = "text";
-        } else {
-          input.type = "password";
-        }
-      }
-    }
-  };
+  //   if (e.target.value === pass) {
+  //     msgDiv.innerText = "Passwords match !";
+  //   } else {
+  //     msgDiv.innerText = "Passwords don't match !";
+  //   }
 
-  const confirmPassword = (e) => {
-    e.preventDefault();
-    let parent = e.target.parentNode;
-    let msgDiv = parent.querySelector(".small");
-
-    if (e.target.value === pass) {
-      msgDiv.innerText = "Passwords match !";
-    } else {
-      msgDiv.innerText = "Passwords don't match !";
-    }
-
-    setDetails({ ...details, cpass: e.target.value });
-  };
+  //   setDetails({ ...details, cpass: e.target.value });
+  // };
 
   const handleInput = (e, regex) => {
     e.preventDefault();
@@ -109,9 +113,10 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    for (let key of Object.keys(details)) {
-      //  no field empty
-      if (details[key].length < 3) {
+    let divs = document.querySelectorAll(".small");
+    for (let div of divs) {
+      // Passwords match ! length
+      if (div.innerText.length > 17) {
         setAlert("Please enter valid details", "uni-blue", 5000);
         return;
       }
@@ -136,6 +141,16 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
     bioRef.current = e.target.value;
     // https://github.com/lovasoa/react-contenteditable/issues/161
     setDetails({ ...details, bio: bioRef.current });
+  };
+
+  const changeHobbies = (e) => {
+    e.preventDefault();
+    console.log(e);
+    let hobsArr = e.target.value.split(",");
+    setDetails({
+      ...details,
+      hobbies: hobsArr.map((hobbie) => hobbie.trim()),
+    });
   };
 
   return (
@@ -221,7 +236,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               <div className="section-head text-start mt-2">Banner Image</div>
               {imgCropSec !== "banner" ? (
                 <div className="p-0 m-0">
-                  {bannerimg && bannerimg.length < 5 ? (
+                  {bannerimg.length < 5 ? (
                     <img
                       src={noImageFound}
                       style={{
@@ -264,7 +279,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               <div className="section-head text-start mt-2">Profile Image</div>
               {imgCropSec !== "profile" ? (
                 <div className="p-0 m-0">
-                  {bannerimg && bannerimg.length < 5 ? (
+                  {profileimg.length < 5 ? (
                     <img
                       src={noImageFound}
                       style={{
@@ -303,10 +318,10 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               )}
             </div>
             {/* -----------PASSWORD--------------- */}
-            <div className="col-sm-12 text-start mt-3 mb-0">
+            {/* <div className="col-sm-12 text-start mt-3 mb-0">
               <h6 className="mb-0">Change Password</h6>
-            </div>
-            <div className="col-sm-12">
+            </div> */}
+            {/* <div className="col-sm-12">
               <div className="input-group form-group">
                 <input
                   className="form-control currpassword"
@@ -329,8 +344,8 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                 </button>
                 <div className="d-block small warning-msg"></div>
               </div>
-            </div>
-            <div className="col-sm-12">
+            </div> */}
+            {/* <div className="col-sm-12">
               <div className="input-group form-group">
                 <input
                   className="form-control password"
@@ -353,8 +368,8 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                 </button>
                 <div className="d-block small warning-msg"></div>
               </div>
-            </div>
-            <div className="col-sm-12">
+            </div> */}
+            {/* <div className="col-sm-12">
               <div className="form-group">
                 <input
                   className="form-control password"
@@ -367,6 +382,37 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                 />{" "}
                 <div className="d-block small warning-msg"></div>
               </div>
+            </div> */}
+            <div className="col-sm-12 text-start mt-3 mb-0">
+              <h6 className="mb-0">Hobbies (comma seperated) </h6>
+            </div>
+            <div className="col-sm-12">
+              <div className="form-group">
+                <input
+                  className="form-control password"
+                  type="text"
+                  name="hobbies"
+                  value={hobbies}
+                  placeholder="Enter your hobbies"
+                  onChange={(e) => changeHobbies(e)}
+                  autoComplete="turn_off_autocomplete"
+                />{" "}
+              </div>
+            </div>
+            <div className="col-sm-12">
+              {hobbies.length > 0 &&
+                hobbies.map(
+                  (hob, i) =>
+                    hob.trim().length > 0 && (
+                      <span
+                        key={i}
+                        className="d-inline mr-2 upload-details-hobs-t"
+                        title={hob}
+                      >
+                        {hob}
+                      </span>
+                    )
+                )}
             </div>
           </div>
 

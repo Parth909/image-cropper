@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 // types
-import { EMAIL_SENT, EDIT_USER_PROFILE, SET_USER } from "./types";
+import { EDIT_USER_PROFILE, SET_USER, SET_LOADING } from "./types";
 
 export const editUserProfile = (data) => async (dispatch) => {
   data["currentpassword"] = data["currpass"];
@@ -13,11 +13,6 @@ export const editUserProfile = (data) => async (dispatch) => {
   // make request
 
   console.log(data);
-  dispatch({
-    type: EDIT_USER_PROFILE,
-    // data from db
-    payload: { ...data, currentpassword: data.currpass, password: data.pass },
-  });
 };
 
 export const registerUser = (data) => async (dispatch) => {
@@ -30,16 +25,11 @@ export const registerUser = (data) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post(`/api/register`, obj);
+    await axios.post(`/api/register`, obj);
 
     dispatch(
       setAlert(`An email has been sent to ${data.email}`, "uni-blue", 10000)
     );
-
-    dispatch({
-      type: EMAIL_SENT,
-      payload: true,
-    });
   } catch (error) {
     dispatch(
       setAlert(
@@ -53,7 +43,7 @@ export const registerUser = (data) => async (dispatch) => {
 
 export const activateUser = (token) => async (dispatch) => {
   try {
-    const res = await axios.post(`/api/register/activate`, { token });
+    await axios.post(`/api/register/activate`, { token });
 
     dispatch(
       setAlert(
@@ -62,11 +52,6 @@ export const activateUser = (token) => async (dispatch) => {
         10000
       )
     );
-
-    dispatch({
-      type: EMAIL_SENT,
-      payload: false,
-    });
   } catch (error) {
     dispatch(
       setAlert(
@@ -88,14 +73,28 @@ export const loginUser = (data) => async (dispatch) => {
 
     if (res.status === 200) {
       // set the user
+      const payload = {
+        token: res.data.token,
+        isAuthenticated: true,
+        loading: false,
+        _id: res.data.user._id,
+        firstname: res.data.user.firstname,
+        lastname: res.data.user.lastname,
+        username: res.data.user.username,
+        email: res.data.user.email,
+        bio: res.data.user.bio,
+        bannerimg: res.data.user.bannerimg,
+        profileimg: res.data.user.profileimg,
+        hobbies: res.data.user.hobbies,
+      };
+      dispatch({
+        type: SET_USER,
+        payload,
+      });
+      dispatch(setAlert("Successfully logged in", "uni-blue", 10000));
+    } else {
+      dispatch(setAlert("Cannot login", "uni-danger", 10000));
     }
-
-    dispatch(setAlert("Successfully logged in", "uni-blue", 10000));
-
-    dispatch({
-      type: EMAIL_SENT,
-      payload: false,
-    });
   } catch (error) {
     dispatch(
       setAlert(
@@ -107,4 +106,58 @@ export const loginUser = (data) => async (dispatch) => {
   }
 };
 
-export const loadUser = () => async (dispatch) => {};
+export const loadUser = (token) => async (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+    payload: true,
+  });
+
+  try {
+    const res = await axios.get("/api/user", {
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.status === 200) {
+      const payload = {
+        token: token,
+        isAuthenticated: true,
+        loading: false,
+        _id: res.data.user._id,
+        firstname: res.data.user.firstname,
+        lastname: res.data.user.lastname,
+        username: res.data.user.username,
+        email: res.data.user.email,
+        bio: res.data.user.bio,
+        bannerimg: res.data.user.bannerimg,
+        profileimg: res.data.user.profileimg,
+        hobbies: res.data.user.hobbies,
+      };
+      dispatch({
+        type: SET_USER,
+        payload,
+      });
+    }
+
+    dispatch({
+      type: SET_LOADING,
+      payload: false,
+    });
+    console.log(res.data);
+  } catch (error) {
+    dispatch(
+      // when JWT malforms | token is absent
+      setAlert(
+        error.response.data.error ?? "Login to continue",
+        "uni-danger",
+        5000
+      )
+    );
+    dispatch({
+      type: SET_LOADING,
+      payload: false,
+    });
+  }
+};

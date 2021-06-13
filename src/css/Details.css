@@ -20,3 +20,44 @@ div[contenteditable="true"]:focus {
   transform: scale(1.05);
   transition: all 200ms;
 }
+
+/* image */
+.card-500 {
+  max-width: 700px;
+  background-color: #fff;
+  border: none;
+  border-radius: 12px;
+}
+
+.vid-details-cover-prof-wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+}
+.vid-ch-cover-img {
+  display: block;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  z-index: 20;
+}
+.vid-ch-cover-img img {
+  max-width: 100%;
+  z-index: 20;
+  border-radius: 5%;
+}
+.vid-ch-img {
+  display: block;
+  position: relative;
+  width: clamp(100px, 17vh, 17vh);
+  height: clamp(100px, 17vh, 17vh);
+  margin-top: clamp(-50px, -9vh, -9vh);
+  z-index: 30;
+}
+.vid-ch-img img {
+  max-width: 100%;
+  border-radius: 10%;
+  border: 5px solid white;
+  z-index: 30;
+}

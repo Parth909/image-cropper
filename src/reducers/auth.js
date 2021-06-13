@@ -1,15 +1,14 @@
 import {
   USER_LOADED,
   REGISTER_SUCCESS,
-  EMAIL_SENT,
   SET_USER,
+  SET_LOADING,
 } from "../actions/types";
 import banner from "../image/banner.jpg";
 import square from "../image/square.jpg";
 
 const initialState = {
   token: null,
-  emailSent: false,
   isAuthenticated: false,
   loading: false,
   _id: null,
@@ -20,6 +19,7 @@ const initialState = {
   bio: "",
   bannerimg: "",
   profileimg: "",
+  hobbies: [],
 };
 
 // const initialState = {
@@ -39,18 +39,16 @@ export default function auth(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case EMAIL_SENT:
-      return {
-        ...state,
-        emailSent: payload, //true
-      };
     case SET_USER:
       localStorage.setItem("__image_cropper_token__", payload.token);
       return {
         ...state,
-        token: payload.token,
-        isAuthenticated: true,
-        loading: false,
+        ...payload,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: payload,
       };
     case USER_LOADED:
       return {

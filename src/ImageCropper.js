@@ -151,7 +151,8 @@ const CustomImage = ({
       <div className="col-12">
         <div className="d-flex justify-content-center">
           <div className="mx-auto mt-3" style={{ width: "100%" }}>
-            <div className=" text-center">
+            <div className="text-center">
+              <div>Drag & Select part of the image</div>
               <div>
                 <input
                   id="custom-image-accept"
