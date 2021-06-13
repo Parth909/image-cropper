@@ -5,9 +5,14 @@ import "./css/Auth.css";
 import Brain from "./image/brain.png";
 // actions
 import { setAlert } from "./actions/alert";
-import { registerUser } from "./actions/auth";
+import { registerUser, loadUser } from "./actions/auth";
 
-const Register = ({ auth: { isAuthenticated }, setAlert, registerUser }) => {
+const Register = ({
+  auth: { isAuthenticated },
+  setAlert,
+  registerUser,
+  loadUser,
+}) => {
   const [data, setData] = React.useState({
     first: "",
     last: "",
@@ -18,6 +23,13 @@ const Register = ({ auth: { isAuthenticated }, setAlert, registerUser }) => {
   });
 
   const { first, last, username, email, pass, cpass } = data;
+
+  React.useEffect(() => {
+    let token = localStorage.getItem("__image_cropper_token__");
+    if (token !== null) {
+      loadUser(token);
+    }
+  }, []);
 
   if (isAuthenticated) {
     return <Redirect to="/details" />;
@@ -242,4 +254,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { setAlert, registerUser })(Register);
+export default connect(mapStateToProps, { setAlert, registerUser, loadUser })(
+  Register
+);

@@ -3,12 +3,12 @@ import "./css/Details.css";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import noBannerImg from "./image/no_banner_image.jpg";
-import noProfileImg from "./image/no_image_found.png";
+import noProfileImg from "./image/no_image_found.jpg";
 import ContentEditable from "react-contenteditable";
 // actions
-import { deleteUser } from "./actions/auth";
+import { deleteUser, logoutUser } from "./actions/auth";
 
-const Details = ({ auth, deleteUser }) => {
+const Details = ({ auth, deleteUser, logoutUser }) => {
   const bioRef = React.useRef("");
 
   React.useEffect(() => {
@@ -79,6 +79,15 @@ const Details = ({ auth, deleteUser }) => {
 
             <div className="container mt-3">
               <button
+                className="btn btn-md btn-primary"
+                onClick={(e) => logoutUser(auth.token)}
+              >
+                Logout
+              </button>
+            </div>
+
+            <div className="container mt-3">
+              <button
                 className="btn btn-md btn-danger"
                 onClick={(e) => deleteUser(auth.token)}
               >
@@ -96,4 +105,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { deleteUser })(Details);
+export default connect(mapStateToProps, { deleteUser, logoutUser })(Details);

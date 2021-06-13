@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 // types
-import { SET_USER, SET_LOADING } from "./types";
+import { SET_USER, SET_LOADING, REMOVE_USER } from "./types";
 
 export const editUserProfile = (data, token) => async (dispatch) => {
   delete data["password"];
@@ -194,6 +194,10 @@ export const deleteUser = (token) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
+    dispatch({
+      type: REMOVE_USER,
+      payload: null,
+    });
     dispatch(setAlert("Successfully deleted account", "uni-blue", 5000));
   } catch (error) {
     dispatch(
@@ -205,4 +209,14 @@ export const deleteUser = (token) => async (dispatch) => {
       )
     );
   }
+};
+
+export const logoutUser = (token) => async (dispatch) => {
+  // For now just removing token from localStorage Only
+  // For security purpose make the make the token invalid(expire) explicitly in the backend
+  dispatch({
+    type: REMOVE_USER,
+    payload: null,
+  });
+  dispatch(setAlert("Successfully logged out", "uni-blue", 5000));
 };
