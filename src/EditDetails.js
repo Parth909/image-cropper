@@ -4,7 +4,7 @@ import Brain from "./image/brain.png";
 import "react-image-crop/dist/ReactCrop.css";
 import ContentEditable from "react-contenteditable";
 import ImageCropper from "./ImageCropper";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // actions
 import { setAlert } from "./actions/alert";
 import { editUserProfile } from "./actions/auth";
@@ -27,6 +27,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
     currpass: "",
     // pass: "",
     // cpass: "",
+    hobbiesTxt: "",
     hobbies: [],
   });
   const [bannerimg, setBannerImg] = React.useState("");
@@ -41,6 +42,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
     currpass,
     pass,
     cpass,
+    hobbiesTxt,
     hobbies,
   } = details;
 
@@ -121,7 +123,8 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
         return;
       }
     }
-    editUserProfile({ ...details, bannerimg, profileimg });
+    console.log(auth.token);
+    editUserProfile({ ...details, bannerimg, profileimg }, auth.token);
   };
 
   const patterns = {
@@ -145,11 +148,19 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
 
   const changeHobbies = (e) => {
     e.preventDefault();
-    console.log(e);
     let hobsArr = e.target.value.split(",");
+
+    let hobbies = [];
+    for (let hob of hobsArr) {
+      if (hob.trim().length > 0) {
+        hobbies.push(hob.trim().toLowerCase());
+      }
+    }
+
     setDetails({
       ...details,
-      hobbies: hobsArr.map((hobbie) => hobbie.trim()),
+      hobbiesTxt: e.target.value,
+      hobbies,
     });
   };
 
@@ -392,7 +403,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                   className="form-control password"
                   type="text"
                   name="hobbies"
-                  value={hobbies}
+                  value={hobbiesTxt}
                   placeholder="Enter your hobbies"
                   onChange={(e) => changeHobbies(e)}
                   autoComplete="turn_off_autocomplete"
@@ -400,19 +411,21 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               </div>
             </div>
             <div className="col-sm-12">
-              {hobbies.length > 0 &&
-                hobbies.map(
-                  (hob, i) =>
-                    hob.trim().length > 0 && (
-                      <span
-                        key={i}
-                        className="d-inline mr-2 upload-details-hobs-t"
-                        title={hob}
-                      >
-                        {hob}
-                      </span>
-                    )
-                )}
+              <div className="my-3">
+                {hobbies.length > 0 &&
+                  hobbies.map(
+                    (hob, i) =>
+                      hob.trim().length > 0 && (
+                        <span
+                          key={i}
+                          className="d-inline-block m-2 upload-details-hobs-t"
+                          title={hob}
+                        >
+                          {hob}
+                        </span>
+                      )
+                  )}
+              </div>
             </div>
           </div>
 
@@ -428,14 +441,14 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
               </button>
             </div>
             <div className="col-sm-6">
-              <Link
-                to="/details"
+              <a
+                href="/details"
                 className="btn btn-secondary btn-md py-1 mt-3"
                 type="submit"
                 style={{ boxShadow: "none" }}
               >
                 Cancel
-              </Link>
+              </a>
             </div>
           </div>
           {/* <button

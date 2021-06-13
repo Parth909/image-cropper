@@ -1,18 +1,43 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 // types
-import { EDIT_USER_PROFILE, SET_USER, SET_LOADING } from "./types";
+import { SET_USER, SET_LOADING } from "./types";
 
-export const editUserProfile = (data) => async (dispatch) => {
-  data["currentpassword"] = data["currpass"];
-  data["password"] = data["pass"];
+export const editUserProfile = (data, token) => async (dispatch) => {
+  delete data["password"];
   delete data["currpass"];
-  delete data["pass"];
-  delete data["cpass"];
 
-  // make request
+  try {
+    const res = await axios.post("/api/user", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  console.log(data);
+    if (res.status === 200) {
+      delete res.data.user.createdAt;
+      delete res.data.user.updatedAt;
+      delete res.data.user._v;
+      const payload = {
+        token: token,
+        ...res.data.user,
+      };
+      dispatch({
+        type: SET_USER,
+        payload,
+      });
+      dispatch(setAlert("Successfully updated the profile", "uni-blue", 5000));
+    }
+  } catch (error) {
+    dispatch(
+      setAlert(
+        error.response.data.error ?? "Internal Server Error",
+        "uni-danger",
+        5000
+      )
+    );
+  }
 };
 
 export const registerUser = (data) => async (dispatch) => {
@@ -145,7 +170,6 @@ export const loadUser = (token) => async (dispatch) => {
       type: SET_LOADING,
       payload: false,
     });
-    console.log(res.data);
   } catch (error) {
     dispatch(
       // when JWT malforms | token is absent
@@ -159,5 +183,26 @@ export const loadUser = (token) => async (dispatch) => {
       type: SET_LOADING,
       payload: false,
     });
+  }
+};
+
+export const deleteUser = (token) => async (dispatch) => {
+  try {
+    await axios.delete("/api/user", {
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    dispatch(setAlert("Successfully deleted account", "uni-blue", 5000));
+  } catch (error) {
+    dispatch(
+      // when JWT malforms | token is absent
+      setAlert(
+        error.response.data.error ?? "Error Deleting Account !",
+        "uni-danger",
+        5000
+      )
+    );
   }
 };

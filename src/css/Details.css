@@ -61,3 +61,11 @@ div[contenteditable="true"]:focus {
   border: 5px solid white;
   z-index: 30;
 }
+
+.upload-details-hobs-t {
+  color: #fff;
+  padding: clamp(5px, 0.9vmin, 0.9vmin);
+  letter-spacing: 0.03em;
+  background-color: #35b1f8;
+  border-radius: 0.2rem;
+}

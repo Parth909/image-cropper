@@ -1,11 +1,4 @@
-import {
-  USER_LOADED,
-  REGISTER_SUCCESS,
-  SET_USER,
-  SET_LOADING,
-} from "../actions/types";
-import banner from "../image/banner.jpg";
-import square from "../image/square.jpg";
+import { SET_USER, SET_LOADING, REMOVE_USER } from "../actions/types";
 
 const initialState = {
   token: null,
@@ -22,19 +15,6 @@ const initialState = {
   hobbies: [],
 };
 
-// const initialState = {
-//   token: null,
-//   isAuthenticated: false,
-//   loading: false,
-//   firstname: "Parth",
-//   lastname: "Bhoir",
-//   username: "parth_bhoir979",
-//   email: "parth.bhoir909@gmail.com",
-//   bio: "We are the greatest of all time in this whole world<br><br>Noice noice &lt;strong&gt;&lt;/strong&gt;",
-//   bannerimg: banner,
-//   profileimg: square,
-// };
-
 export default function auth(state = initialState, action) {
   const { type, payload } = action;
 
@@ -50,12 +30,10 @@ export default function auth(state = initialState, action) {
         ...state,
         loading: payload,
       };
-    case USER_LOADED:
+    case REMOVE_USER:
+      localStorage.removeItem("__image_cropper_token__");
       return {
-        ...state,
-        isAuthenticated: true,
-        loading: false,
-        ...payload,
+        ...initialState,
       };
     default:
       return state;
