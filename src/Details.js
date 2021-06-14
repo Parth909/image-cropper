@@ -77,14 +77,17 @@ const Details = ({ auth, deleteUser, logoutUser }) => {
               </Link>
             </div>
 
-            <div className="container mt-3">
-              <button
-                className="btn btn-md btn-primary"
-                onClick={(e) => logoutUser(auth.token)}
-              >
-                Logout
-              </button>
-            </div>
+            {(auth.facebookAuth && auth.facebookAuth === true) ||
+            (auth.googleAuth && auth.googleAuth === true) ? null : (
+              <div className="container mt-3">
+                <button
+                  className="btn btn-md btn-primary"
+                  onClick={(e) => logoutUser(auth.token)}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
 
             <div className="container mt-3">
               <button

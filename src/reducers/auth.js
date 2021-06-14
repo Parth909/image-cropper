@@ -13,6 +13,7 @@ const initialState = {
   bannerimg: "",
   profileimg: "",
   hobbies: [],
+  facebookAuth: null,
 };
 
 export default function auth(state = initialState, action) {

@@ -3,15 +3,23 @@ import { connect } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import "./css/Auth.css";
 import Brain from "./image/brain.png";
+import jwt from "jsonwebtoken";
 // actions
 import { setAlert } from "./actions/alert";
-import { registerUser, loadUser } from "./actions/auth";
+import {
+  registerUser,
+  loadUser,
+  refreshSignIn,
+  signinFacebook,
+} from "./actions/auth";
+import FacebookLogin from "react-facebook-login";
 
 const Register = ({
   auth: { isAuthenticated },
   setAlert,
   registerUser,
   loadUser,
+  signinFacebook,
 }) => {
   const [data, setData] = React.useState({
     first: "",
@@ -34,6 +42,35 @@ const Register = ({
   if (isAuthenticated) {
     return <Redirect to="/details" />;
   }
+
+  const componentClicked = () => {
+    console.log("clicked");
+  };
+
+  const responseFacebook = (response) => {
+    let token = localStorage.getItem("__image_cropper_token__");
+    if (token !== null) {
+      let data = jwt.decode(token);
+      if (response.name !== undefined) {
+        const obj = {
+          name: response.name,
+          email: response.email,
+          image_url: response.picture.data.url,
+          _id: data._id,
+        };
+        refreshSignIn(obj);
+      }
+    } else {
+      if (response.name !== undefined) {
+        const obj = {
+          name: response.name,
+          email: response.email,
+          image_url: response.picture.data.url,
+        };
+        signinFacebook(obj);
+      }
+    }
+  };
 
   const showPassword = (e) => {
     e.preventDefault();
@@ -239,6 +276,16 @@ const Register = ({
           >
             Register
           </button>
+          <div className="d-block mt-2">
+            <FacebookLogin
+              appId="274370707485284"
+              autoLoad={false}
+              fields="name,email,picture"
+              onClick={componentClicked}
+              callback={responseFacebook}
+              cssClass="loginBtn loginBtn--facebook btn btn-primary"
+            />
+          </div>
         </div>
         <div className="text-center">
           <Link to="/login" style={{ textDecoration: "none" }}>
@@ -254,6 +301,10 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { setAlert, registerUser, loadUser })(
-  Register
-);
+export default connect(mapStateToProps, {
+  setAlert,
+  registerUser,
+  loadUser,
+  refreshSignIn,
+  signinFacebook,
+})(Register);
