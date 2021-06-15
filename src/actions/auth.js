@@ -310,6 +310,8 @@ export const refreshSignIn = (details) => async (dispatch) => {
       dispatch(setAlert("Cannot signin", "uni-danger", 10000));
     }
   } catch (error) {
+    console.log(error.response.status);
+
     dispatch(
       setAlert(
         error.response.data.error ?? "Internal Server Error",

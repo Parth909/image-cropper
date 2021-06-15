@@ -13,6 +13,7 @@ import {
   signinFacebook,
 } from "./actions/auth";
 import FacebookLogin from "react-facebook-login";
+import { GoogleLogin } from "react-google-login";
 
 const Register = ({
   auth: { isAuthenticated },
@@ -20,6 +21,7 @@ const Register = ({
   registerUser,
   loadUser,
   signinFacebook,
+  refreshSignIn,
 }) => {
   const [data, setData] = React.useState({
     first: "",
@@ -58,6 +60,7 @@ const Register = ({
           image_url: response.picture.data.url,
           _id: data._id,
         };
+        console.log("refreshing token");
         refreshSignIn(obj);
       }
     } else {
@@ -67,8 +70,27 @@ const Register = ({
           email: response.email,
           image_url: response.picture.data.url,
         };
+        console.log("obtaining token first time");
         signinFacebook(obj);
       }
+    }
+  };
+
+  const responseGoogle = (response) => {
+    console.log(response);
+
+    if (!response.error) {
+      const obj = {
+        email: response.profileObj.email,
+        lastname: response.profileObj.familyName,
+        firstname: response.profileObj.givenName,
+        profileimg: response.profileObj.imageUrl,
+      };
+      console.log("sending obj", obj);
+    }
+
+    if (response.error) {
+      console.log(response.error);
     }
   };
 
