@@ -11,6 +11,8 @@ import {
   loadUser,
   refreshSignIn,
   signinFacebook,
+  signinGoogle,
+  refreshSignInGoogle,
 } from "./actions/auth";
 import FacebookLogin from "react-facebook-login";
 import { GoogleLogin } from "react-google-login";
@@ -22,6 +24,8 @@ const Register = ({
   loadUser,
   signinFacebook,
   refreshSignIn,
+  signinGoogle,
+  refreshSignInGoogle,
 }) => {
   const [data, setData] = React.useState({
     first: "",
@@ -76,21 +80,46 @@ const Register = ({
     }
   };
 
-  const responseGoogle = (response) => {
-    console.log(response);
+  // const obj = {
+  //   name: response.profileObj.name,
+  //   email: response.profileObj.email,
+  //   image_url: response.profileObj.imageUrl,
+  // };
+  // signinGoogle(obj);
 
-    if (!response.error) {
-      const obj = {
-        email: response.profileObj.email,
-        lastname: response.profileObj.familyName,
-        firstname: response.profileObj.givenName,
-        profileimg: response.profileObj.imageUrl,
-      };
-      console.log("sending obj", obj);
+  const responseGoogle = (response) => {
+    if (response.profileObj !== undefined) {
+      let token = localStorage.getItem("__image_cropper_token__");
+      if (token !== null) {
+        let data = jwt.decode(token);
+        const obj = {
+          name: response.name,
+          email: response.email,
+          image_url: response.picture.data.url,
+          _id: data._id,
+        };
+        console.log("refreshing token");
+        refreshSignInGoogle(obj);
+      } else {
+        const obj = {
+          name: response.name,
+          email: response.email,
+          image_url: response.picture.data.url,
+        };
+        console.log("obtaining token first time");
+        signinGoogle(obj);
+      }
     }
 
-    if (response.error) {
-      console.log(response.error);
+    if (
+      response.error &&
+      !response.error.includes("idpiframe_initialization")
+    ) {
+      setAlert(
+        "Cannot login using google. Try doing this in Settings -> Privacy and Security -> Clear browsing data -> Clear cached images and files",
+        "uni-danger",
+        10000
+      );
     }
   };
 
@@ -308,6 +337,16 @@ const Register = ({
               cssClass="loginBtn loginBtn--facebook btn btn-primary"
             />
           </div>
+          <div className="d-block mt-2">
+            <GoogleLogin
+              clientId="1079226342492-s3jc9388fjl1kaqdqfr7fcml76j33sg4.apps.googleusercontent.com"
+              buttonText="Login With Google"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              className="loginBtn loginBtn--google"
+              cookiePolicy={"single_host_origin"}
+            />
+          </div>
         </div>
         <div className="text-center">
           <Link to="/login" style={{ textDecoration: "none" }}>
@@ -329,4 +368,6 @@ export default connect(mapStateToProps, {
   loadUser,
   refreshSignIn,
   signinFacebook,
+  signinGoogle,
+  refreshSignInGoogle,
 })(Register);

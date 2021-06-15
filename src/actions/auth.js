@@ -310,8 +310,103 @@ export const refreshSignIn = (details) => async (dispatch) => {
       dispatch(setAlert("Cannot signin", "uni-danger", 10000));
     }
   } catch (error) {
-    console.log(error.response.status);
+    dispatch(
+      setAlert(
+        error.response.data.error ?? "Internal Server Error",
+        "uni-danger",
+        5000
+      )
+    );
+  }
+};
 
+export const signinGoogle = (details) => async (dispatch) => {
+  const obj = {
+    name: details.name,
+    email: details.email,
+    image_url: details.image_url,
+  };
+
+  try {
+    const res = await axios.post(`/api/signin/google`, obj);
+
+    if (res.status === 200) {
+      // set the user
+      const payload = {
+        token: res.data.token,
+        isAuthenticated: true,
+        loading: false,
+        _id: res.data.user._id,
+        firstname: res.data.user.firstname,
+        lastname: res.data.user.lastname,
+        username: res.data.user.username,
+        email: res.data.user.email,
+        bio: res.data.user.bio,
+        bannerimg: res.data.user.bannerimg,
+        profileimg: res.data.user.profileimg,
+        hobbies: res.data.user.hobbies,
+        facebookAuth: res.data.user.facebookAuth,
+        googleAuth: res.data.user.googleAuth,
+      };
+      dispatch({
+        type: SET_USER,
+        payload,
+      });
+      dispatch(setAlert("Successfully signed in", "uni-blue", 10000));
+    } else {
+      dispatch(setAlert("Cannot signin", "uni-danger", 10000));
+    }
+  } catch (error) {
+    dispatch(
+      setAlert(
+        error.response.data.error ?? "Internal Server Error",
+        "uni-danger",
+        5000
+      )
+    );
+  }
+};
+
+// /refreshsignin/google
+
+export const refreshSignInGoogle = (details) => async (dispatch) => {
+  const obj = {
+    name: details.name,
+    email: details.email,
+    image_url: details.image_url,
+    _id: details._id,
+  };
+
+  try {
+    const res = await axios.post(`/api/refreshsignin/google`, obj);
+
+    if (res.status === 200) {
+      // set the user
+      const payload = {
+        token: res.data.token,
+        isAuthenticated: true,
+        loading: false,
+        _id: res.data.user._id,
+        firstname: res.data.user.firstname,
+        lastname: res.data.user.lastname,
+        username: res.data.user.username,
+        email: res.data.user.email,
+        bio: res.data.user.bio,
+        bannerimg: res.data.user.bannerimg,
+        profileimg: res.data.user.profileimg,
+        hobbies: res.data.user.hobbies,
+        facebookAuth: res.data.user.facebookAuth,
+        googleAuth: res.data.user.googleAuth,
+      };
+      dispatch({
+        type: SET_USER,
+        payload,
+      });
+      dispatch(setAlert("Successfully signed in", "uni-blue", 10000));
+    } else {
+      dispatch(setAlert("Cannot signin", "uni-danger", 10000));
+    }
+  } catch (error) {
     dispatch(
       setAlert(
         error.response.data.error ?? "Internal Server Error",

@@ -187,3 +187,11 @@ button {
   background-color: #5b7bd5;
   background-image: linear-gradient(#5b7bd5, #4864b1);
 }
+
+.loginBtn--google {
+  background-color: #fff;
+  background-image: linear-gradient(#fcfcfc, #fcfcfc);
+  /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+  border: 2px solid #e9e9e9 !important;
+  border-radius: 5px !important;
+}
