@@ -93,18 +93,18 @@ const Register = ({
       if (token !== null) {
         let data = jwt.decode(token);
         const obj = {
-          name: response.name,
-          email: response.email,
-          image_url: response.picture.data.url,
+          name: response.profileObj.name,
+          email: response.profileObj.email,
+          image_url: response.profileObj.imageUrl,
           _id: data._id,
         };
         console.log("refreshing token");
         refreshSignInGoogle(obj);
       } else {
         const obj = {
-          name: response.name,
-          email: response.email,
-          image_url: response.picture.data.url,
+          name: response.profileObj.name,
+          email: response.profileObj.email,
+          image_url: response.profileObj.imageUrl,
         };
         console.log("obtaining token first time");
         signinGoogle(obj);
@@ -198,7 +198,10 @@ const Register = ({
   const { firstpt, lastpt, usernamept, emailpt, passpt } = patterns;
 
   return (
-    <div className="container mt-2 mb-5 d-flex justify-content-center">
+    <div
+      className="container mt-2 mb-5 d-flex justify-content-center"
+      id="page-top"
+    >
       <div className="card px-1 py-4">
         <div className="card-body">
           <img
@@ -209,113 +212,115 @@ const Register = ({
           <h6 className="information mt-4">
             Please provide the following information for registering
           </h6>
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  name="first"
-                  value={first}
-                  placeholder="First Name"
-                  onChange={(e) => handleInput(e, firstpt)}
-                  autoComplete="turn_off_autocomplete"
-                  title="Firstname atleast 3 characters long containing only alphabets"
-                />{" "}
-                <div className="small warning-msg"></div>
+          <form className="p-0 m-0">
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="form-group">
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="first"
+                    value={first}
+                    placeholder="First Name"
+                    onChange={(e) => handleInput(e, firstpt)}
+                    autoComplete="turn_off_autocomplete"
+                    title="Firstname atleast 3 characters long containing only alphabets"
+                  />{" "}
+                  <div className="small warning-msg"></div>
+                </div>
+              </div>
+              <div className="col-sm-12">
+                <div className="form-group">
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="last"
+                    value={last}
+                    placeholder="Last name"
+                    onChange={(e) => handleInput(e, lastpt)}
+                    autoComplete="turn_off_autocomplete"
+                    title="Lastname atleast 3 characters long containing only alphabets"
+                  />{" "}
+                  <div className="small warning-msg"></div>
+                </div>
+              </div>
+              <div className="col-sm-12">
+                <div className="form-group">
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="username"
+                    value={username}
+                    placeholder="Username"
+                    onChange={(e) => handleInput(e, usernamept)}
+                    autoComplete="off"
+                    title="Alphanumeric less than 30 characters with no consecutive periods and shouldn't end and start with period"
+                  />{" "}
+                  <div className="small warning-msg"></div>
+                </div>
+              </div>
+              <div className="col-sm-12">
+                <div className=" form-group">
+                  <input
+                    className="form-control"
+                    type="email"
+                    name="email"
+                    value={email}
+                    placeholder="Email"
+                    onChange={(e) => handleInput(e, emailpt)}
+                    autoComplete="off"
+                    title="Email of the form anonymous@domain.com"
+                  />{" "}
+                  <div className="small warning-msg"></div>
+                </div>
+              </div>
+              <div className="col-sm-12">
+                <div className="input-group form-group">
+                  <input
+                    className="form-control password"
+                    type="password"
+                    name="pass"
+                    value={pass}
+                    placeholder="Password"
+                    onChange={(e) => handleInput(e, passpt)}
+                    autoComplete="turn_off_autocomplete"
+                    aria-describedby="button-addon2"
+                    // title should be long such that it goes on next line
+                    title="Choose a strong password with atleast six characters long"
+                  />{" "}
+                  <button
+                    className="btn btn-sm btn-view-pass"
+                    type="button"
+                    onClick={(e) => showPassword(e)}
+                    id="button-addon2"
+                  >
+                    <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                  </button>
+                  <div className="d-block small warning-msg"></div>
+                </div>
+              </div>
+              <div className="col-sm-12">
+                <div className="form-group">
+                  <input
+                    className="form-control password"
+                    type="password"
+                    name="cpass"
+                    value={cpass}
+                    placeholder="Confirm Password"
+                    onChange={(e) => confirmPassword(e)}
+                    autoComplete="turn_off_autocomplete"
+                  />{" "}
+                  <div className="d-block small warning-msg"></div>
+                </div>
               </div>
             </div>
-            <div className="col-sm-12">
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  name="last"
-                  value={last}
-                  placeholder="Last name"
-                  onChange={(e) => handleInput(e, lastpt)}
-                  autoComplete="turn_off_autocomplete"
-                  title="Lastname atleast 3 characters long containing only alphabets"
-                />{" "}
-                <div className="small warning-msg"></div>
-              </div>
-            </div>
-            <div className="col-sm-12">
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  type="text"
-                  name="username"
-                  value={username}
-                  placeholder="Username"
-                  onChange={(e) => handleInput(e, usernamept)}
-                  autoComplete="off"
-                  title="Alphanumeric less than 30 characters with no consecutive periods and shouldn't end and start with period"
-                />{" "}
-                <div className="small warning-msg"></div>
-              </div>
-            </div>
-            <div className="col-sm-12">
-              <div className=" form-group">
-                <input
-                  className="form-control"
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="Email"
-                  onChange={(e) => handleInput(e, emailpt)}
-                  autoComplete="off"
-                  title="Email of the form anonymous@domain.com"
-                />{" "}
-                <div className="small warning-msg"></div>
-              </div>
-            </div>
-            <div className="col-sm-12">
-              <div className="input-group form-group">
-                <input
-                  className="form-control password"
-                  type="password"
-                  name="pass"
-                  value={pass}
-                  placeholder="Password"
-                  onChange={(e) => handleInput(e, passpt)}
-                  autoComplete="turn_off_autocomplete"
-                  aria-describedby="button-addon2"
-                  // title should be long such that it goes on next line
-                  title="Choose a strong password with atleast six characters long"
-                />{" "}
-                <button
-                  className="btn btn-sm btn-view-pass"
-                  type="button"
-                  onClick={(e) => showPassword(e)}
-                  id="button-addon2"
-                >
-                  <i className="fa fa-eye-slash" aria-hidden="true"></i>
-                </button>
-                <div className="d-block small warning-msg"></div>
-              </div>
-            </div>
-            <div className="col-sm-12">
-              <div className="form-group">
-                <input
-                  className="form-control password"
-                  type="password"
-                  name="cpass"
-                  value={cpass}
-                  placeholder="Confirm Password"
-                  onChange={(e) => confirmPassword(e)}
-                  autoComplete="turn_off_autocomplete"
-                />{" "}
-                <div className="d-block small warning-msg"></div>
-              </div>
-            </div>
-          </div>
+          </form>
           <div className=" d-flex flex-column text-center px-5 mt-3 mb-3 ">
             {" "}
             <small className="agree-text">
               By Registering you agree to the
             </small>{" "}
-            <a href="#" className="terms">
+            <a href="#page-top" className="terms">
               Terms & Conditions
             </a>{" "}
           </div>{" "}

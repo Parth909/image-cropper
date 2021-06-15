@@ -25,7 +25,7 @@ const CustomImage = ({
     blob: "",
   });
   // customImage downloaded with same filename
-  const [filename, setFilename] = React.useState(null);
+  // const [filename, setFilename] = React.useState(null);
 
   const generateUpload = (canvas, crop, setCropImgUrl) => {
     if (!crop || !canvas) {
@@ -94,7 +94,7 @@ const CustomImage = ({
       const reader = new FileReader();
       reader.addEventListener("load", () => setUpImg(reader.result));
       // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
-      setFilename(e.target.files[0].name);
+      // setFilename(e.target.files[0].name);
       reader.readAsDataURL(e.target.files[0]);
     }
   };

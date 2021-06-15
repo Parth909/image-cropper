@@ -24,16 +24,16 @@ const Details = ({ auth, deleteUser, logoutUser }) => {
               <div className="vid-details-cover-prof-wrapper">
                 <div className="vid-ch-cover-img">
                   {auth.bannerimg.length < 10 ? (
-                    <img src={noBannerImg} />
+                    <img src={noBannerImg} alt=".." />
                   ) : (
-                    <img src={auth.bannerimg} />
+                    <img src={auth.bannerimg} alt=".." />
                   )}
                 </div>
                 <div className="vid-ch-img d-flex mx-auto">
                   {auth.profileimg.length < 10 ? (
-                    <img src={noProfileImg} />
+                    <img src={noProfileImg} alt=".." />
                   ) : (
-                    <img src={auth.profileimg} />
+                    <img src={auth.profileimg} alt=".." />
                   )}
                 </div>
               </div>

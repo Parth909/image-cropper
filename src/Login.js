@@ -90,50 +90,52 @@ const Login = ({
             style={{ height: "100px", width: "100px" }}
             alt=".."
           />
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="form-group">
-                <input
-                  className="form-control"
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="Email"
-                  onChange={(e) => handleInput(e, emailpt)}
-                  autoComplete="off"
-                  title="Email of the form anonymous@domain.com"
-                />{" "}
-                <div className="small text-start warning-msg"></div>
+          <form className="p-0 m-0">
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="form-group">
+                  <input
+                    className="form-control"
+                    type="email"
+                    name="email"
+                    value={email}
+                    placeholder="Email"
+                    onChange={(e) => handleInput(e, emailpt)}
+                    autoComplete="off"
+                    title="Email of the form anonymous@domain.com"
+                  />{" "}
+                  <div className="small text-start warning-msg"></div>
+                </div>
+              </div>
+              <div className="col-sm-12">
+                {/* input-group & form-group don't work with each other sometimes */}
+                {/* try them seperately */}
+                <div className="input-group">
+                  <input
+                    className="form-control password"
+                    type="password"
+                    name="pass"
+                    value={pass}
+                    placeholder="Password"
+                    onChange={(e) => handleInput(e, passpt)}
+                    autoComplete="turn_off_autocomplete"
+                    aria-describedby="button-addon2"
+                    title="Enter your password atleast 6 characters long"
+                  />{" "}
+                  <button
+                    className="btn btn-sm btn-view-pass"
+                    type="button"
+                    onClick={(e) => showPassword(e)}
+                    id="button-addon2"
+                  >
+                    <i className="fa fa-eye-slash" aria-hidden="true"></i>
+                  </button>
+                  <br />
+                  <div className="d-block small warning-msg"></div>
+                </div>
               </div>
             </div>
-            <div className="col-sm-12">
-              {/* input-group & form-group don't work with each other sometimes */}
-              {/* try them seperately */}
-              <div className="input-group">
-                <input
-                  className="form-control password"
-                  type="password"
-                  name="pass"
-                  value={pass}
-                  placeholder="Password"
-                  onChange={(e) => handleInput(e, passpt)}
-                  autoComplete="turn_off_autocomplete"
-                  aria-describedby="button-addon2"
-                  title="Enter your password atleast 6 characters long"
-                />{" "}
-                <button
-                  className="btn btn-sm btn-view-pass"
-                  type="button"
-                  onClick={(e) => showPassword(e)}
-                  id="button-addon2"
-                >
-                  <i className="fa fa-eye-slash" aria-hidden="true"></i>
-                </button>
-                <br />
-                <div className="d-block small warning-msg"></div>
-              </div>
-            </div>
-          </div>
+          </form>
           <button
             className="btn btn-primary btn-lg mt-3 py-1"
             type="submit"

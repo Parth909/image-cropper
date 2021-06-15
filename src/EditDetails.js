@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import Brain from "./image/brain.png";
 import "react-image-crop/dist/ReactCrop.css";
 import ContentEditable from "react-contenteditable";
 import ImageCropper from "./ImageCropper";
-import { Link } from "react-router-dom";
 // actions
 import { setAlert } from "./actions/alert";
 import { editUserProfile } from "./actions/auth";
@@ -34,17 +32,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
   const [profileimg, setProfileImg] = React.useState("");
 
   // setting bio using bioRef.current
-  const {
-    firstname,
-    lastname,
-    username,
-    email,
-    currpass,
-    pass,
-    cpass,
-    hobbiesTxt,
-    hobbies,
-  } = details;
+  const { firstname, lastname, username, email, hobbiesTxt, hobbies } = details;
 
   React.useEffect(() => {
     setDetails({
@@ -137,7 +125,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
     passpt: /^.{6,}$/i,
   };
 
-  const { firstpt, lastpt, usernamept, emailpt, passpt } = patterns;
+  const { firstpt, lastpt, usernamept, emailpt } = patterns;
 
   // additional
   const handleBioChange = (e) => {
@@ -255,6 +243,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                         height: "auto",
                         borderRadius: "0.7rem",
                       }}
+                      alt=".."
                     />
                   ) : (
                     <img
@@ -264,6 +253,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                         height: "auto",
                         borderRadius: "0.7rem",
                       }}
+                      alt=".."
                     />
                   )}
                   <div className="text-center">
@@ -298,6 +288,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                         height: "auto",
                         borderRadius: "0.7rem",
                       }}
+                      alt=".."
                     />
                   ) : (
                     <img
@@ -307,6 +298,7 @@ const EditDetails = ({ auth, setAlert, editUserProfile }) => {
                         height: "auto",
                         borderRadius: "0.7rem",
                       }}
+                      alt=".."
                     />
                   )}
                   <div className="text-center">
