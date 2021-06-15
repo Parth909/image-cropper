@@ -54,6 +54,8 @@ const Register = ({
   };
 
   const responseFacebook = (response) => {
+    console.log(response);
+
     let token = localStorage.getItem("__image_cropper_token__");
     if (token !== null) {
       let data = jwt.decode(token);
